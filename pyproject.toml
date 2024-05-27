@@ -10,6 +10,7 @@ dependencies = [
     "matplotlib",
     "numpy",
     "scipy",
+    "casadi",
     "pandas[output-formatting]",
 ]
 
