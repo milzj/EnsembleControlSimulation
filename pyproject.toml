@@ -1,14 +1,13 @@
 [build-system]
-requires = ["setuptools>=64.4.0", "wheel", "pip>=22.3"]
+requires = ["setuptools>=64.4.0", "wheel", "pip>=24.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "my-paper"
 version = "1.2.0"
 dependencies = [
-    "ap_features",
     "matplotlib",
-    "numpy",
+    "numpy>=1.25",
     "scipy",
     "casadi",
     "pandas[output-formatting]",
