@@ -3,8 +3,8 @@ requires = ["setuptools>=64.4.0", "wheel", "pip>=24.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "my-paper"
-version = "1.2.0"
+name = "EnsembleControlSimulation"
+version = "0.0.1"
 dependencies = [
     "matplotlib",
     "numpy>=1.25",
