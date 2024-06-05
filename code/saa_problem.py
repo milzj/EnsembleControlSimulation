@@ -36,7 +36,7 @@ def saa_problem(problem, samples):
 
     objective, constraints, decisions, initial_decisions, lbw, ubw, lbg, ubg = \
                                 MultipleShootingOptimizationProblem(objective_function, integrator, lbu, ubu, 
-                                ensemble_initial_value, alpha, nensemblestates, ncontrols, 
+                                ensemble_initial_value, alpha, nensemblestates, ncontrols,
                                 nsamples, nintervals)
 
     problem = {'f': objective, 'x': decisions, 'g': constraints}

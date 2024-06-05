@@ -1,15 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from figure_style import *
+from style.figure_style import *
+from style.lsqs_label import lsqs_label
 import sys
 
-from stats import load_dict
-from lsqs_label import lsqs_label
+from stats import load_dict, save_dict
 
 def plot_objective_rates(ref_date, saa_date, ndrop=1):
-
-
 
     # reference simulation
     outdir = "output/"+ref_date+"/harmonic_oscillator"
@@ -50,7 +48,6 @@ def plot_objective_rates(ref_date, saa_date, ndrop=1):
     _handles, _labels = plt.gca().get_legend_handles_labels()
     by_label = dict(zip(_labels, _handles))
     plt.legend(by_label.values(), by_label.keys(), loc="best")
-
 
     plt.xscale("log", base=2)
     plt.yscale("log", base=2)
@@ -99,7 +96,6 @@ def plot_objective_rates(ref_date, saa_date, ndrop=1):
 
 
 if __name__ == "__main__":
-
 
     ref_date = sys.argv[1]
     saa_date = sys.argv[2]

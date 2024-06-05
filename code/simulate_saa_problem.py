@@ -7,7 +7,6 @@ from harmonic_oscillator.sampler import Sampler
 from plot_state_control import plot_state_control
 from stats import save_dict
 
-
 now = sys.argv[1]
 name = sys.argv[2]
 
