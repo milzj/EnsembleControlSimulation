@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "EnsembleControlSimulation"
 version = "0.0.1"
 dependencies = [
-    "ensemblecontrol@git+https://github.com/milzj/EnsembleControl"
+    "ensemblecontrol@https://zenodo.org/records/11669863/files/milzj/EnsembleControl-v0.0.1.zip?download=1",
     "matplotlib",
     "numpy>=1.25",
     "scipy",
