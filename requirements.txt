@@ -5,11 +5,15 @@
 #    pip-compile --output-file=requirements.txt pyproject.toml
 #
 casadi==3.6.5
-    # via my-paper (pyproject.toml)
+    # via
+    #   EnsembleControlSimulation (pyproject.toml)
+    #   ensemblecontrol
 contourpy==1.2.1
     # via matplotlib
 cycler==0.12.1
     # via matplotlib
+ensemblecontrol @ https://zenodo.org/records/11669863/files/milzj/EnsembleControl-v0.0.1.zip?download=1
+    # via EnsembleControlSimulation (pyproject.toml)
 fonttools==4.52.1
     # via matplotlib
 jinja2==3.1.4
@@ -19,19 +23,24 @@ kiwisolver==1.4.5
 markupsafe==2.1.5
     # via jinja2
 matplotlib==3.9.0
-    # via my-paper (pyproject.toml)
+    # via
+    #   EnsembleControlSimulation (pyproject.toml)
+    #   ensemblecontrol
 numpy==1.26.4
     # via
+    #   EnsembleControlSimulation (pyproject.toml)
     #   casadi
     #   contourpy
+    #   ensemblecontrol
     #   matplotlib
-    #   my-paper (pyproject.toml)
     #   pandas
     #   scipy
 packaging==24.0
     # via matplotlib
 pandas[output-formatting]==2.2.2
-    # via my-paper (pyproject.toml)
+    # via
+    #   EnsembleControlSimulation (pyproject.toml)
+    #   ensemblecontrol
 pillow==10.3.0
     # via matplotlib
 pyparsing==3.1.2
@@ -43,7 +52,9 @@ python-dateutil==2.9.0.post0
 pytz==2024.1
     # via pandas
 scipy==1.13.1
-    # via my-paper (pyproject.toml)
+    # via
+    #   EnsembleControlSimulation (pyproject.toml)
+    #   ensemblecontrol
 six==1.16.0
     # via python-dateutil
 tabulate==0.9.0
