@@ -1,10 +1,11 @@
 from base import idx_state_control
+from base.figure_style import *
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from casadi import *
 
-from figure_style import *
 
 
 def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename=""):
@@ -38,7 +39,16 @@ def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename=""):
     empty_patch = mpatches.Patch(color='none') # create a patch with no color
 
     handles.append(empty_patch)  # add new patches and labels to list
-    labels.append(r"($\alpha={}, n ={}, N={}$)".format(alpha,nintervals,nsamples))
+
+    if filename.find("reference") != -1:
+        label = r"($\alpha={}, n = {}, N = {}$)".format(alpha,nintervals,nsamples)
+        label = label.replace("N", "N_{\mathrm{ref}}")
+        labels.append(label)
+    elif filename.find("nominal") != -1:
+        labels.append(r"($\alpha={}, n = {}$)".format(alpha,nintervals))
+    else:
+        labels.append(r"($\alpha={}, n = {}, N={}$)".format(alpha,nintervals,nsamples))
+
 
     plt.legend(handles, labels) # apply new handles and labels to plot
     plt.xlabel(r'$t$')
@@ -47,7 +57,7 @@ def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename=""):
     plt.gca().set_box_aspect(1)
     plt.tight_layout()
 
-    plt.savefig(outdir+"/controls={}.pdf".format(filename))
+    plt.savefig(outdir+"/controls_{}.pdf".format(filename))
 
     plt.figure(1)
     plt.clf()
