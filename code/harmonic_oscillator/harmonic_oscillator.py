@@ -1,70 +1,69 @@
+import ensemblecontrol
 from casadi import *
 import numpy as np
 
-class HarmonicOscillator(object):
+class HarmonicOscillator(ensemblecontrol.ControlProblem):
+    # Based on Problem S_C in https://doi.org/10.1137/140983161
 
     def __init__(self):
 
-        self.final_time = 1. # Time horizon
-        self.lbu = [-3.,-3.]
-        self.ubu = [3.,3.]
+        super().__init__()
 
-        self._nintervals = 50
         self._alpha = 1e-3
+        self._nintervals = 50
+        self._final_time = 1.
+        self._ncontrols = 2
+        self._nstates = 2
 
-        self.nominal_param = [np.pi]
-        self.nparams = len(self.nominal_param)
-        self.ncontrols = len(self.lbu)
+        self._control_bounds = [[-3., -3], [3., 3.]]
 
-        self.nstates = len(self.parameterized_initial_value(self.nparams*[0]))
-
-    @property
-    def nintervals(self):
-        return self._nintervals
-
-    @nintervals.setter
-    def nintervals(self, value):
-        self._nintervals = value
+        self.u = MX.sym("u", 2)
+        self.x = MX.sym("h", 2)
+        self.params = MX.sym("k", 1)
+        self.L = (self.alpha/2)*dot(self.u, self.u)
+        self._nominal_param = [np.pi]
 
     @property
-    def mesh_width(self):
-        return self.final_time/self.nintervals
+    def control_bounds(self):
+        # lower and upper bounds
+        return self._control_bounds
 
     @property
-    def alpha(self):
-        return self._alpha
-
-    @alpha.setter
-    def alpha(self, value):
-        self._alpha = value
+    def nominal_param(self):
+        # lower and upper bounds
+        return self._nominal_param
 
     @property
-    def parameterized_rhs(self):
+    def control(self):
+        return self.u
 
-        # Declare model variables
-        x = MX.sym('x', self.nstates)
-        u = MX.sym('u', self.ncontrols)
-        k = MX.sym('k', self.nparams)
+    @property
+    def state(self):
+        return self.x
 
-        # Model equations
-        #xdot = vertcat(-k[0]*x[1]+1e-1*(k[1]-np.pi)*x[0]*u[0], k[0]*x[0]+1e-1*(k[2]-np.pi)*x[1]*u[1])
-        xdot = vertcat(-k[0]*x[1], k[0]*x[0])
+    @property
+    def right_hand_side(self):
 
-        # Objective term
-        L = u[0]**2+u[1]**2
+        x = self.x
+        u = self.u
+        k = self.params
 
-        # parameterized right-hand side
-        parametric_rhs = Function('fp', [x, u, k], [xdot])
+        xdot = vertcat(-k[0]*x[1]+u[0], k[0]*x[0]+u[1])
+        self.xdot = xdot
 
-        return parametric_rhs, L, u
+        return Function('f', [x, u, k], [xdot])
 
-    def parameterized_initial_value(self, params):
+    @property
+    def integral_cost_function(self):
+        return self.L
+
+    def parameterized_initial_state(self, params):
         # parameterized initial value
-        return [1.0,0.0]
+        return [1.0, 0.0]
 
-    def objective_function(self, x):
+    def final_cost_function(self, x):
         # Objective function to be evaluated
         # at states at final time
         # Notation F in manuscript
-        return x[0]**2 + x[1]**2
+        return dot(x,x)/2
 
