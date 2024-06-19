@@ -11,7 +11,7 @@ class Sampler(object):
 
     def sample(self, replication, nsamples, nparams):
 
-        return self.rngs[replication].uniform(0, 2*np.pi, (nsamples, nparams))
+        return self.rngs[replication].uniform(0, 1.0, (nsamples, nparams))
 
 
 if __name__ == "__main__":
@@ -19,6 +19,5 @@ if __name__ == "__main__":
     sampler = Sampler(nreplications=2)
     sample = sampler.sample(0, 4, 3)
     print(sample)
+    print(len(sample))
 
-    sample = sampler.sample(1, 4, 3)
-    print(sample)

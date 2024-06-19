@@ -12,7 +12,7 @@ name = sys.argv[2]
 outdir = "output/"+now+"/"+name+"/reference_problem/"
 os.makedirs(outdir, exist_ok=True)
 
-nsamples = 2**12
+nsamples = 2**14
 
 harmonic_oscillator = HarmonicOscillator()
 sampler = ReferenceSampler()

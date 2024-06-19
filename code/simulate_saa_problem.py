@@ -44,7 +44,6 @@ for nsamples in nsamples_vec:
     optimal_value_stats[nsamples] = val_stat
 
 
-
 filename = "solutions"
 filename = name + "_" + filename + "_{}".format(now)
 save_dict(outdir, filename, solution_stats)

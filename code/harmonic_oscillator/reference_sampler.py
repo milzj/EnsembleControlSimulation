@@ -12,7 +12,7 @@ class ReferenceSampler(object):
         sampler = qmc.Sobol(d=nparams, scramble=False)
 
         m = int(np.log2(nsamples))
-        return 2.0*np.pi*sampler.random_base2(m=m)
+        return sampler.random_base2(m=m)
 
 
 if __name__ == "__main__":
@@ -20,3 +20,4 @@ if __name__ == "__main__":
     reference_sampler = ReferenceSampler()
     sample = reference_sampler.sample(4, 3)
     print(sample)
+    print(len(sample))

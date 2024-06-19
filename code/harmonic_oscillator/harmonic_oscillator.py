@@ -19,9 +19,9 @@ class HarmonicOscillator(ensemblecontrol.ControlProblem):
 
         self.u = MX.sym("u", 2)
         self.x = MX.sym("h", 2)
-        self.params = MX.sym("k", 1)
+        self.params = MX.sym("k", 5)
         self.L = (self.alpha/2)*dot(self.u, self.u)
-        self._nominal_param = [np.pi]
+        self._nominal_param = [np.array(5*[.5])]
 
     @property
     def control_bounds(self):
@@ -42,13 +42,16 @@ class HarmonicOscillator(ensemblecontrol.ControlProblem):
         return self.x
 
     @property
+    def nparams(self):
+        return 5
+
+    @property
     def right_hand_side(self):
 
         x = self.x
         u = self.u
         k = self.params
-
-        xdot = vertcat(-k[0]*x[1]+u[0], k[0]*x[0]+u[1])
+        xdot = vertcat(-2*np.pi*k[0]*x[1]+u[0]+2*4*(k[1]-0.5), 2*np.pi*k[0]*x[0]+u[1]+2*4*(k[2]-0.5))
         self.xdot = xdot
 
         return Function('f', [x, u, k], [xdot])
@@ -58,8 +61,8 @@ class HarmonicOscillator(ensemblecontrol.ControlProblem):
         return self.L
 
     def parameterized_initial_state(self, params):
-        # parameterized initial value
-        return [1.0, 0.0]
+        # parameterized initial values
+        return [1+2*(params[3]-0.5)/2, 2*(params[4]-0.5)/2]
 
     def final_cost_function(self, x):
         # Objective function to be evaluated

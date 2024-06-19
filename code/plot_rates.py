@@ -106,5 +106,6 @@ if __name__ == "__main__":
     ref_date = sys.argv[1]
     saa_date = sys.argv[2]
 
-    plot_objective_rates(ref_date, saa_date)
-    plot_criticality_measures(saa_date)
+    ndrop = 0
+    plot_objective_rates(ref_date, saa_date, ndrop=ndrop)
+    plot_criticality_measures(saa_date, ndrop=ndrop)

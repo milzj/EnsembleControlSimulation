@@ -10,7 +10,7 @@ from stats import load_dict, save_dict
 def simulate_criticality_measures(saa_date, problem_id):
 
     # SAA simulation
-    outdir = "output/"+saa_date+"/{}".format(problem_id)
+    outdir = "output/"+saa_date+"/{}/saa_problem".format(problem_id)
     filename = "{}_solutions_{}".format(problem_id,saa_date)
     saa_controls = load_dict(outdir, filename)
 
@@ -20,7 +20,7 @@ def simulate_criticality_measures(saa_date, problem_id):
     now = sys.argv[1]
     name = sys.argv[2]
 
-    nrefsamples = 2**12
+    nrefsamples = 2**14
 
     harmonic_oscillator = HarmonicOscillator()
     sampler = ReferenceSampler()
@@ -63,7 +63,6 @@ def simulate_criticality_measures(saa_date, problem_id):
             cm = ensemblecontrol.base.canonical_criticality_measure(u_saa, grad_saa, lb_vec, ub_vec, mesh_width)
 
             cm_stat[replication] = cm
-            print(cm)
 
         criticality_measure_stats[nsamples] = cm_stat
 

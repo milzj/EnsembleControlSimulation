@@ -13,6 +13,7 @@ outdir = "output/"+now+"/"+name+"/nominal_problem/"
 os.makedirs(outdir, exist_ok=True)
 
 harmonic_oscillator = HarmonicOscillator()
+print(harmonic_oscillator.nominal_param)
 saa_harmonic_oscillator = ensemblecontrol.SAAProblem(harmonic_oscillator, harmonic_oscillator.nominal_param)
 w_opt, f_opt = saa_harmonic_oscillator.solve()
 
