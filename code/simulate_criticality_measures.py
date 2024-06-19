@@ -2,55 +2,47 @@ import sys, os
 from base import idx_state_control
 
 import ensemblecontrol
-from harmonic_oscillator import HarmonicOscillator
-from harmonic_oscillator.reference_sampler import ReferenceSampler
 from stats import load_dict, save_dict
 
-
-def simulate_criticality_measures(saa_date, problem_id):
+def simulate_criticality_measures(ControlProblem, Sampler, saa_date, name, nrefsamples):
 
     # SAA simulation
-    outdir = "output/"+saa_date+"/{}/saa_problem".format(problem_id)
-    filename = "{}_solutions_{}".format(problem_id,saa_date)
+    outdir = "output/"+saa_date+"/{}/saa_problem".format(name)
+    filename = "{}_solutions_{}".format(name,saa_date)
     saa_controls = load_dict(outdir, filename)
 
     nsamples_vec = list(saa_controls.keys())
     nreplications = len(saa_controls[nsamples_vec[0]].keys())
 
-    now = sys.argv[1]
-    name = sys.argv[2]
+    control_problem = ControlProblem()
+    sampler = Sampler()
+    nparams = control_problem.nparams
 
-    nrefsamples = 2**14
-
-    harmonic_oscillator = HarmonicOscillator()
-    sampler = ReferenceSampler()
-    nparams = harmonic_oscillator.nparams
-
-    harmonic_oscillator = HarmonicOscillator()
+    control_problem = ControlProblem()
     samples = sampler.sample(nrefsamples, nparams)
-    saa_harmonic_oscillator = ensemblecontrol.SAAProblem(harmonic_oscillator, samples, MultipleShooting=False)
+    saa_control_problem = ensemblecontrol.SAAProblem(control_problem, samples, MultipleShooting=False)
 
     # compute control bounds
-    nintervals = harmonic_oscillator.nintervals
-    lbu, ubu = harmonic_oscillator.control_bounds
+    nintervals = control_problem.nintervals
+    lbu, ubu = control_problem.control_bounds
     lb_vec = nintervals*lbu
     ub_vec = nintervals*ubu
-    mesh_width = harmonic_oscillator.mesh_width
+    mesh_width = control_problem.mesh_width
 
     # control idx
-    nstates = harmonic_oscillator.nstates
-    ncontrols = harmonic_oscillator.ncontrols
+    nstates = control_problem.nstates
+    ncontrols = control_problem.ncontrols
 
     criticality_measure_stats = {}
 
     for nsamples in nsamples_vec:
 
+        print("nsamples={}\n\n".format(nsamples))
+
         cm_stat = {}
         idx_state, idx_control = idx_state_control(nstates, ncontrols, nsamples, nintervals)
         idx_control = idx_control.flatten()
         idx_control.sort()
-
-        print("nsamples={}\n\n".format(nsamples))
 
         for replication in range(nreplications):
 
@@ -58,7 +50,7 @@ def simulate_criticality_measures(saa_date, problem_id):
 
             u_saa = w_saa[idx_control]
 
-            deriv_saa = saa_harmonic_oscillator.derivative(u_saa)
+            deriv_saa = saa_control_problem.derivative(u_saa)
             grad_saa = deriv_saa/mesh_width
             cm = ensemblecontrol.base.canonical_criticality_measure(u_saa, grad_saa, lb_vec, ub_vec, mesh_width)
 
@@ -66,17 +58,32 @@ def simulate_criticality_measures(saa_date, problem_id):
 
         criticality_measure_stats[nsamples] = cm_stat
 
-    outdir = "output/"+now+"/"+name+"/saa_problem/"
+    outdir = "output/"+saa_date+"/"+name+"/saa_problem/"
     os.makedirs(outdir, exist_ok=True)
 
     filename = "criticality_measures"
-    filename = name + "_" + filename + "_{}".format(now)
+    filename = name + "_" + filename + "_{}".format(saa_date)
     save_dict(outdir, filename, criticality_measure_stats)
-
 
 if __name__ == "__main__":
 
-    saa_date = sys.argv[1]
-    problem_id = sys.argv[2]
+    from harmonic_oscillator import HarmonicOscillator
+    from harmonic_oscillator.reference_sampler import ReferenceSampler as HOReferenceSampler
 
-    simulate_criticality_measures(saa_date, problem_id)
+    from cubic_oscillator import CubicOscillator
+    from cubic_oscillator.reference_sampler import ReferenceSampler as COReferenceSampler
+
+    saa_date = sys.argv[1]
+    name = sys.argv[2]
+    nrefsamples = int(sys.argv[3])
+
+    if name == "harmonic_oscillator":
+        control_problem = HarmonicOscillator
+        sampler = HOReferenceSampler
+    elif name == "cubic_oscillator":
+        control_problem = CubicOscillator
+        sampler = COReferenceSampler
+    else:
+        raise NotImplementedError()
+
+    simulate_criticality_measures(control_problem, sampler, saa_date, name, nrefsamples)

@@ -61,16 +61,16 @@ def plot_rates(sample_sizes, errors, label, outdir, type, filename):
     plt.savefig(outdir+"/{}={}.pdf".format(filename, type))
 
 
-def plot_objective_rates(ref_date, saa_date, ndrop=1):
+def plot_objective_rates(ref_date, saa_date, name, ndrop=1):
 
     # reference simulation
-    outdir = "output/"+ref_date+"/harmonic_oscillator"
-    filename = "reference_problem/harmonic_oscillator_optimal_values_{}".format(ref_date)
+    outdir = "output/"+ref_date+"/"+name
+    filename = "reference_problem/"+name+"_optimal_values_{}".format(ref_date)
     ref_value = load_dict(outdir, filename)
 
     # SAA simulation
-    outdir = "output/"+saa_date+"/harmonic_oscillator"
-    filename = "saa_problem/harmonic_oscillator_optimal_values_{}".format(saa_date)
+    outdir = "output/"+saa_date+"/"+name
+    filename = "saa_problem/"+name+"_optimal_values_{}".format(saa_date)
     saa_stats = load_dict(outdir, filename)
 
     # empirical means
@@ -86,11 +86,11 @@ def plot_objective_rates(ref_date, saa_date, ndrop=1):
     # l1
     plot_rates(sample_sizes, np.abs(errors), r"$\mathbb{E}[|v_N^*-v_{\mathrm{ref}}^*|]$",  outdir, "objective_rates", filename)
 
-def plot_criticality_measures(saa_date, ndrop=1):
+def plot_criticality_measures(saa_date, name, ndrop=1):
 
     # SAA simulation
-    outdir = "output/"+saa_date+"/harmonic_oscillator"
-    filename = "saa_problem/harmonic_oscillator_criticality_measures_{}".format(saa_date)
+    outdir = "output/"+saa_date+"/"+name
+    filename = "saa_problem/"+name+"_criticality_measures_{}".format(saa_date)
     saa_stats = load_dict(outdir, filename)
 
     # empirical means
@@ -105,7 +105,9 @@ if __name__ == "__main__":
 
     ref_date = sys.argv[1]
     saa_date = sys.argv[2]
+    name = sys.argv[3]
 
     ndrop = 0
-    plot_objective_rates(ref_date, saa_date, ndrop=ndrop)
-    plot_criticality_measures(saa_date, ndrop=ndrop)
+
+    plot_objective_rates(ref_date, saa_date, name, ndrop=ndrop)
+    plot_criticality_measures(saa_date, name, ndrop=ndrop)
