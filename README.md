@@ -19,6 +19,13 @@ To start an interactive docker container you can execute the following command
 docker run --rm -it ghcr.io/scientificcomputing/example-paper:latest
 ```
 
+Alternatively, you can build a docker image locally and subsequently run it:
+
+```bash
+docker build -t ensemblecontrolsimulation .
+docker run -it ensemblecontrolsimulation
+```
+
 ### Pre-processing
 Add steps for pre-processing, e.g
 
