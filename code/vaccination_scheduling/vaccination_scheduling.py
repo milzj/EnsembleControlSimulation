@@ -2,7 +2,7 @@ import ensemblecontrol
 from casadi import *
 import numpy as np
 
-class VacciationScheduling(ensemblecontrol.ControlProblem):
+class VaccinationScheduling(ensemblecontrol.ControlProblem):
     # Based on section 4 in https://doi.org/10.1090/dimacs/075/03
     def __init__(self):
 

@@ -1,0 +1,1 @@
+from .vaccination_scheduling import VaccinationScheduling
