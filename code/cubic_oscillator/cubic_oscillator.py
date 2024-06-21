@@ -18,9 +18,9 @@ class CubicOscillator(ensemblecontrol.ControlProblem):
 
         self.u = MX.sym("u", 2)
         self.x = MX.sym("h", 2)
-        self.params = MX.sym("k", 4)
+        self.params = MX.sym("k", 5)
         self.L = (self.alpha/2)*dot(self.u, self.u)
-        self._nominal_param = [4*[np.pi]]
+        self._nominal_param = [5*[np.pi]]
 
     @property
     def control_bounds(self):
@@ -42,7 +42,7 @@ class CubicOscillator(ensemblecontrol.ControlProblem):
 
     @property
     def nparams(self):
-        return 4
+        return 5
 
     @property
     def right_hand_side(self):
@@ -50,7 +50,8 @@ class CubicOscillator(ensemblecontrol.ControlProblem):
         x = self.x
         u = self.u
         k = self.params
-        xdot = vertcat(-k[0]*x[1]+((k[1]-np.pi)/np.pi-x[0]**2-x[1]**2)*x[0]+u[0], k[0]*x[0]+((k[2]-np.pi)/np.pi-x[0]**2-x[1]**2)*x[1]+(k[3]-np.pi)/np.pi+u[1])
+        xdot = vertcat(-k[0]*x[1]+((k[1]-np.pi)/np.pi-x[0]**2-x[1]**2)*x[0]+(k[4]-np.pi)/np.pi+u[0],
+                        k[0]*x[0]+((k[2]-np.pi)/np.pi-x[0]**2-x[1]**2)*x[1]+(k[3]-np.pi)/np.pi+u[1])
         self.xdot = xdot
 
         return Function('f', [x, u, k], [xdot])
