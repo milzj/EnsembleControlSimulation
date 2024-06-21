@@ -46,8 +46,7 @@ def plot_rates(sample_sizes, errors, label, outdir, type, filename):
 
     rate = x[1]
     constant = 10.0**x[0]
-
-    plt.plot(sample_sizes, constant*sample_sizes**rate, color="black", linestyle="--", label=lsqs_label(rate=rate, constant=constant, base="N"))
+    plt.plot(sample_sizes, constant*np.array(sample_sizes)**rate, color="black", linestyle="--", label=lsqs_label(rate=rate, constant=constant, base="N"))
 
     _handles, _labels = plt.gca().get_legend_handles_labels()
     by_label = dict(zip(_labels, _handles))
@@ -77,7 +76,6 @@ def plot_objective_rates(ref_date, saa_date, name, ndrop=1):
     sample_sizes = list(saa_stats.keys())[ndrop::]
     stats_mat = dict_to_mat(saa_stats)
     errors = np.array(ref_value - stats_mat)
-
     errors = errors[ndrop::, :]
 
     # bias
@@ -109,5 +107,5 @@ if __name__ == "__main__":
 
     ndrop = 0
 
-    plot_objective_rates(ref_date, saa_date, name, ndrop=ndrop)
     plot_criticality_measures(saa_date, name, ndrop=ndrop)
+    plot_objective_rates(ref_date, saa_date, name, ndrop=ndrop)

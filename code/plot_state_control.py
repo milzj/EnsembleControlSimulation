@@ -16,6 +16,7 @@ def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename=""):
     ncontrols = problem.ncontrols
     nintervals = problem.nintervals
     mesh_width = problem.mesh_width
+    nconstrols = problem.ncontrols
 
     idx_state, idx_control = idx_state_control(nstates, ncontrols, nsamples, nintervals)
 
@@ -26,14 +27,16 @@ def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename=""):
     x2_opt_std = np.std(w_opt[idx_state[1::nstates]], axis=0)
 
     u1_opt = w_opt[idx_control[0::ncontrols]].flatten()
-    u2_opt = w_opt[idx_control[1::ncontrols]].flatten()
+    if ncontrols > 1:
+        u2_opt = w_opt[idx_control[1::ncontrols]].flatten()
 
     tgrid = [mesh_width*k for k in range(nintervals+1)]
 
     plt.figure(1)
     plt.clf()
     plt.plot(tgrid, vertcat(DM.nan(1), u1_opt), '-.',color="tab:orange", label=r"$u_1^*(t)$")
-    plt.plot(tgrid, vertcat(DM.nan(1), u2_opt), '--',color="tab:blue", label=r"$u_2^*(t)$")
+    if ncontrols > 1:
+        plt.plot(tgrid, vertcat(DM.nan(1), u2_opt), '--',color="tab:blue", label=r"$u_2^*(t)$")
 
     handles, labels = plt.gca().get_legend_handles_labels() # get existing handles and labels
     empty_patch = mpatches.Patch(color='none') # create a patch with no color
