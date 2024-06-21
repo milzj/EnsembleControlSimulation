@@ -10,8 +10,7 @@ class VaccinationScheduling(ensemblecontrol.ControlProblem):
 
         self._alpha = 2.0
         self._nintervals = 50
-        self._final_time = 1.
-        self.__final_time = 20.
+        self._final_time = 10.
         self._ncontrols = 1
         self._nstates = 5
 
@@ -53,12 +52,11 @@ class VaccinationScheduling(ensemblecontrol.ControlProblem):
         u = self.u
         k = self.params
         alpha = self._alpha
-        final_time = self.__final_time
 
         a, b, c, d, e, g = k[0], k[1], k[2], k[3], k[4], k[5]
         S, E, I, R, N = x[0], x[1], x[2], x[3], x[4]
 
-        xdot = final_time*vertcat(\
+        xdot = vertcat(\
                         b*N-d*S-c*S*I-u*S,
                         c*S*I-(e+d)*E,
                         e*E-(g+a+d)*I,

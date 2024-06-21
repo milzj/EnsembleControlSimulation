@@ -8,7 +8,7 @@ class ReferenceSampler(VaccinationScheduling):
 
         super().__init__()
 
-    def sample(self, nsamples, nparams, sigma=0.1, nominal_param=None):
+    def sample(self, nsamples, nparams):
 
 
         n = nsamples
@@ -23,6 +23,7 @@ class ReferenceSampler(VaccinationScheduling):
         nominal_param = self.nominal_param[0]
 
         sample = sampler.random_base2(m=m)
+
         sample = qmc.scale(sample, -1.0, 1.0)
         sample = (1+sigma*sample)*nominal_param
 
@@ -32,6 +33,6 @@ class ReferenceSampler(VaccinationScheduling):
 if __name__ == "__main__":
 
     reference_sampler = ReferenceSampler()
-    sample = reference_sampler.sample(4, 6)
+    sample = reference_sampler.sample(16, 6)
     print(sample)
     print(len(sample))
