@@ -1,5 +1,5 @@
 date=$(date '+%d-%b-%Y-%H-%M-%S')
-declare -a Problems=("harmonic_oscillator" "cubic_oscillator")
+declare -a Problems=("harmonic_oscillator" "cubic_oscillator" "vaccination_scheduling")
 
 for P in "${Problems[@]}"
 do

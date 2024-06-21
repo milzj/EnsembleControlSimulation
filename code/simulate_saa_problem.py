@@ -13,7 +13,7 @@ def simulate_saa_problem(ControlProblem, Sampler, now, name, nreplications, lbra
 
     control_problem = ControlProblem()
     sampler = Sampler(nreplications=nreplications)
-    nparams = control_problem.nparams
+    nparams = len(control_problem.nominal_param[0])
 
     solution_stats = {}
     optimal_value_stats = {}
@@ -56,6 +56,9 @@ if __name__ == "__main__":
     from cubic_oscillator import CubicOscillator
     from cubic_oscillator.sampler import Sampler as COSampler
 
+    from vaccination_scheduling import VaccinationScheduling
+    from vaccination_scheduling.sampler import Sampler as VSSampler
+
     now = sys.argv[1]
     name = sys.argv[2]
     nreplications = int(sys.argv[3])
@@ -68,6 +71,9 @@ if __name__ == "__main__":
     elif name == "cubic_oscillator":
         ControlProblem = CubicOscillator
         Sampler = COSampler
+    elif name == "vaccination_scheduling":
+        ControlProblem = VaccinationScheduling
+        Sampler = VSSampler
     else:
         raise NotImplementedError()
 

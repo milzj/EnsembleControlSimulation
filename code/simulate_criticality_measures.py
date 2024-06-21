@@ -73,17 +73,23 @@ if __name__ == "__main__":
     from cubic_oscillator import CubicOscillator
     from cubic_oscillator.reference_sampler import ReferenceSampler as COReferenceSampler
 
+    from vaccination_scheduling import VaccinationScheduling
+    from vaccination_scheduling.reference_sampler import ReferenceSampler as VSReferenceSampler
+
     saa_date = sys.argv[1]
     name = sys.argv[2]
     nrefsamples = int(sys.argv[3])
 
     if name == "harmonic_oscillator":
-        control_problem = HarmonicOscillator
-        sampler = HOReferenceSampler
+        ControlProblem = HarmonicOscillator
+        Sampler = HOReferenceSampler
     elif name == "cubic_oscillator":
-        control_problem = CubicOscillator
-        sampler = COReferenceSampler
+        ControlProblem = CubicOscillator
+        Sampler = COReferenceSampler
+    elif name == "vaccination_scheduling":
+        ControlProblem = VaccinationScheduling
+        Sampler = VSReferenceSampler
     else:
         raise NotImplementedError()
 
-    simulate_criticality_measures(control_problem, sampler, saa_date, name, nrefsamples)
+    simulate_criticality_measures(ControlProblem, Sampler, saa_date, name, nrefsamples)

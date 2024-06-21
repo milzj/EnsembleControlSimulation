@@ -1,13 +1,12 @@
 date=$(date '+%d-%b-%Y-%H-%M-%S')
 
 declare -a Problems=("harmonic_oscillator" "cubic_oscillator")
-declare -a Problems=("cubic_oscillator")
+declare -a Problems=("vaccination_scheduling")
 
-nrefsamples=$[2**12]
+nrefsamples=$[2**6]
 nreplications="20"
 lbrange="2"
-ubrange="11"
-
+ubrange="5"
 
 for problem in "${Problems[@]}"
 do

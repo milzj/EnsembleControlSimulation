@@ -4,12 +4,15 @@ import ensemblecontrol
 from plot_state_control import plot_state_control
 from stats import save_dict
 
-def simulate_reference_problem(control_problem, sampler, now, name, nsamples):
+def simulate_reference_problem(ControlProblem, Sampler, now, name, nsamples):
 
     outdir = "output/"+now+"/"+name+"/reference_problem/"
     os.makedirs(outdir, exist_ok=True)
 
-    nparams = control_problem.nparams
+    control_problem = ControlProblem()
+    sampler = Sampler()
+
+    nparams = len(control_problem.nominal_param[0])
     samples = sampler.sample(nsamples, nparams)
 
     saa_control_problem = ensemblecontrol.SAAProblem(control_problem, samples)
@@ -34,18 +37,25 @@ if __name__ == "__main__":
     from cubic_oscillator import CubicOscillator
     from cubic_oscillator.reference_sampler import ReferenceSampler as COReferenceSampler
 
+    from vaccination_scheduling import VaccinationScheduling
+    from vaccination_scheduling.reference_sampler import ReferenceSampler as VSReferenceSampler
+
+
     now = sys.argv[1]
     name = sys.argv[2]
     nrefsamples = int(sys.argv[3])
 
     if name == "harmonic_oscillator":
-        control_problem = HarmonicOscillator()
-        sampler = HOReferenceSampler()
+        ControlProblem = HarmonicOscillator
+        Sampler = HOReferenceSampler
     elif name == "cubic_oscillator":
-        control_problem = CubicOscillator()
-        sampler = COReferenceSampler()
+        ControlProblem = CubicOscillator
+        Sampler = COReferenceSampler
+    elif name == "vaccination_scheduling":
+        ControlProblem = VaccinationScheduling
+        Sampler = VSReferenceSampler
     else:
         raise NotImplementedError()
 
 
-    simulate_reference_problem(control_problem, sampler, now, name, nrefsamples)
+    simulate_reference_problem(ControlProblem, Sampler, now, name, nrefsamples)

@@ -4,10 +4,12 @@ import ensemblecontrol
 from plot_state_control import plot_state_control
 from stats import save_dict
 
-def simulate_nominal_problem(control_problem, now, name):
+def simulate_nominal_problem(ControlProblem, now, name):
 
     outdir = "output/"+now+"/"+name+"/nominal_problem/"
     os.makedirs(outdir, exist_ok=True)
+
+    control_problem = ControlProblem()
 
     saa_control_problem = ensemblecontrol.SAAProblem(control_problem, control_problem.nominal_param)
     w_opt, f_opt = saa_control_problem.solve()
@@ -19,16 +21,18 @@ if __name__ == "__main__":
 
     from harmonic_oscillator import HarmonicOscillator
     from cubic_oscillator import CubicOscillator
+    from vaccination_scheduling import VaccinationScheduling
 
     now = sys.argv[1]
     name = sys.argv[2]
 
     if name == "harmonic_oscillator":
-        control_problem = HarmonicOscillator()
+        ControlProblem = HarmonicOscillator
     elif name == "cubic_oscillator":
-        control_problem = CubicOscillator()
+        ControlProblem = CubicOscillator
+    elif name == "vaccination_scheduling":
+        ControlProblem = VaccinationScheduling
     else:
         raise NotImplementedError()
 
-
-    simulate_nominal_problem(control_problem, now, name)
+    simulate_nominal_problem(ControlProblem, now, name)
