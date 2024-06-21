@@ -50,8 +50,8 @@ class CubicOscillator(ensemblecontrol.ControlProblem):
         x = self.x
         u = self.u
         k = self.params
-        xdot = vertcat(-k[0]*x[1]+((k[1]-np.pi)/np.pi-x[0]**2-x[1]**2)*x[0]+(k[4]-np.pi)/np.pi+u[0],
-                        k[0]*x[0]+((k[2]-np.pi)/np.pi-x[0]**2-x[1]**2)*x[1]+(k[3]-np.pi)/np.pi+u[1])
+        xdot = vertcat(-k[0]*x[1]+((k[1]-np.pi)/np.pi-x[0]**2-x[1]**2)*x[0]+2*(k[4]-np.pi)/np.pi+u[0],
+                        k[0]*x[0]+((k[2]-np.pi)/np.pi-x[0]**2-x[1]**2)*x[1]+2*(k[3]-np.pi)/np.pi+u[1])
         self.xdot = xdot
 
         return Function('f', [x, u, k], [xdot])
