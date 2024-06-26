@@ -10,14 +10,14 @@ class VaccinationScheduling(ensemblecontrol.ControlProblem):
 
         self._alpha = 2.0
         self._nintervals = 50
-        self._final_time = 10.
+        self._final_time = 20.
         self._ncontrols = 1
         self._nstates = 5
 
         self._control_bounds = [[0], [0.9]]
 
         self.u = MX.sym("u", 1)
-        self.x = MX.sym("h", 6)
+        self.x = MX.sym("h", 5)
         self.L = 0.0
         self._nominal_param = [[0.2, 0.525, 0.001, 0.5, 0.5, 0.1]] # a, b, c, d, e, g
         self.params = MX.sym("k", 6)
@@ -25,7 +25,7 @@ class VaccinationScheduling(ensemblecontrol.ControlProblem):
     @property
     def sigma(self):
         # standard deviation
-        return 0.1
+        return 0.05
 
     @property
     def control_bounds(self):
@@ -54,13 +54,12 @@ class VaccinationScheduling(ensemblecontrol.ControlProblem):
         alpha = self._alpha
 
         a, b, c, d, e, g = k[0], k[1], k[2], k[3], k[4], k[5]
-        S, E, I, R, N = x[0], x[1], x[2], x[3], x[4]
+        S, E, I, N = x[0], x[1], x[2], x[3]
 
         xdot = vertcat(\
                         b*N-d*S-c*S*I-u*S,
                         c*S*I-(e+d)*E,
                         e*E-(g+a+d)*I,
-                        g*I-d*R+u*S,
                         (b-d)*N-a*I,
                         .1*I+(alpha/2)*u**2)
 
@@ -74,11 +73,11 @@ class VaccinationScheduling(ensemblecontrol.ControlProblem):
     def parameterized_initial_state(self, params):
         # parameterized initial value
         S0 = 1000; E0 = 100; I0 = 50; R0 = 15
-        return [S0, E0, I0, R0, S0+E0+I0+R0, 0]
+        return [S0, E0, I0, S0+E0+I0+R0, 0]
 
     def final_cost_function(self, x):
         # Objective function to be evaluated
         # at states at final time
         # Notation F in manuscript
-        return x[5]
+        return x[-1]
 
