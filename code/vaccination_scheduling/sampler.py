@@ -19,8 +19,11 @@ class Sampler(VaccinationScheduling):
         sigma = self.sigma
         nominal_param = self.nominal_param[0]
 
-        sample = self.rngs[replication].uniform(0.0, 1.0, (nsamples, nparams))
-        sample = qmc.scale(sample, -1.0, 1.0)
+        sampler = qmc.Sobol(d=nparams, scramble=True, seed=self.rngs[replication])
+        m = int(np.log2(nsamples))
+
+        sample = sampler.random_base2(m=m)
+    	sample = qmc.scale(sample, -1.0, 1.0)
 
         sample = (1+sigma*sample)*nominal_param
 
@@ -32,4 +35,6 @@ if __name__ == "__main__":
     sample = sampler.sample(0, 4, 6)
     print(sample)
     print(len(sample))
-
+    sample = sampler.sample(1, 4, 6)
+    print(sample)
+    print(len(sample))
