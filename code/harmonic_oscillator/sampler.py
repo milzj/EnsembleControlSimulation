@@ -1,7 +1,9 @@
 import numpy as np
 from casadi import *
+from scipy.stats import qmc
+from harmonic_oscillator import ReferenceSampler
 
-class Sampler(object):
+class Sampler(ReferenceSampler):
 
     def __init__(self, nreplications=1):
 
@@ -11,8 +13,8 @@ class Sampler(object):
 
     def sample(self, replication, nsamples, nparams):
 
-        return self.rngs[replication].uniform(0, 1.0, (nsamples, nparams))
-
+        sample = self.rngs[replication].uniform(0, 1.0, (nsamples, nparams))
+        return self.scale(sample)
 
 if __name__ == "__main__":
 

@@ -1,1 +1,2 @@
 from .harmonic_oscillator import HarmonicOscillator
+from .reference_sampler import ReferenceSampler

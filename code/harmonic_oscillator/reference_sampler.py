@@ -12,7 +12,20 @@ class ReferenceSampler(object):
         sampler = qmc.Sobol(d=nparams, scramble=False)
 
         m = int(np.log2(nsamples))
-        return sampler.random_base2(m=m)
+        sample = sampler.random_base2(m=m)
+
+        return self.scale(sample)
+
+    def scale(self, sample):
+        """Scale (0,1) samples"""
+
+        sample[:,1:] *= 2.
+        sample[:,1:] -= 1.
+        sample[:,1:3] *= 5.
+        sample[:,3:5] *= .25
+
+        return sample
+
 
 
 if __name__ == "__main__":
