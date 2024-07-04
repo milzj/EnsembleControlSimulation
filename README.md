@@ -1,7 +1,7 @@
 # Supplementary code for the manuscript: Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/scientificcomputing/example-paper/HEAD)
 
-This repository contains supplementary code for the paper
+This repository contains supplementary code for the manuscript
 > Finsberg, H., Dokken, J. 2022.
 > Title of paper, Journal of ..., volume, page, url
 
