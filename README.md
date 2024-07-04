@@ -1,6 +1,6 @@
 # Supplementary code for the manuscript: Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/scientificcomputing/example-paper/HEAD)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/milzj/EnsembleControlSimulation/HEAD)
 
 This repository contains supplementary code for the manuscript
 > Olena Melnikov and Johannes Milz, 2024, 
