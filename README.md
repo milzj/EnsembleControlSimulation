@@ -1,13 +1,14 @@
 # Supplementary code for the manuscript: Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
+
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/scientificcomputing/example-paper/HEAD)
 
 This repository contains supplementary code for the manuscript
-> Finsberg, H., Dokken, J. 2022.
-> Title of paper, Journal of ..., volume, page, url
-
+> Olena Melnikov and Johannes Milz, 2024, 
+> Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
 
 ## Abstract
-Provide the abstract of the paper
+
+We consider optimal control problems involving nonlinear ordinary differential equations with uncertain inputs. By employing the sample average approximation, we obtain optimal control problems with ensembles of deterministic dynamical systems. Leveraging techniques for metric entropy bounds, we derive non-asymptotic Monte Carlo-type convergence rates for the ensemble-based solutions. Our theoretical framework is validated through numerical simulations on an academic optimal control problem and a vaccination scheduling problem for epidemic control under model parameter uncertainty.
 
 ## Getting started
 
@@ -26,47 +27,26 @@ docker build -t ensemblecontrolsimulation .
 docker run -it ensemblecontrolsimulation
 ```
 
-### Pre-processing
-Add steps for pre-processing, e.g
-
-```
-cd code
-python3 pre-processing.py
-```
-
 ### Running simulation
-Add steps for running simulations, e.g
 
-```
+To run the simulations, execute
+
+```bash
 cd code
-python3 run_all.py
+./simulate_problems.sh
 ```
-
 
 ### Postprocessing
-Add steps for postprocessing / reproducing figures and tables in the paper, e.g
 
-```
+To  reproduce figures, execute
+
+```bash
 cd code
-python3 postprocess.py
+./plot_rates.sh
 ```
-
-## Citation
-
-```
-@software{Lisa_My_Research_Software_2017,
-  author = {Lisa, Mona and Bot, Hew},
-  doi = {10.5281/zenodo.1234},
-  month = {12},
-  title = {{My Research Software}},
-  url = {https://github.com/scientificcomputing/example-paper},
-  version = {2.0.4},
-  year = {2017}
-}
-```
-
 
 ## Having issues
+
 If you have any troubles please file an issue in the GitHub repository.
 
 ## License
