@@ -1,4 +1,4 @@
-# Supplementary code for the paper: Title of paper
+# Supplementary code for the manuscript: Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/scientificcomputing/example-paper/HEAD)
 
 This repository contains supplementary code for the paper
@@ -67,7 +67,8 @@ python3 postprocess.py
 
 
 ## Having issues
-If you have any troubles please file and issue in the GitHub repository.
+If you have any troubles please file an issue in the GitHub repository.
 
 ## License
-MIT
+
+See [LICENSE](LICENSE).
