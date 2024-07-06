@@ -14,8 +14,16 @@ def simulate_nominal_problem(ControlProblem, now, name):
     saa_control_problem = ensemblecontrol.SAAProblem(control_problem, control_problem.nominal_param)
     w_opt, f_opt = saa_control_problem.solve()
 
-    plot_state_control(control_problem, w_opt, nsamples=1, outdir=outdir, filename="nominal")
+    plot_state_control(control_problem, w_opt, nsamples=1, outdir=outdir,
+                filename= name + "_nominal" + "_{}".format(now))
 
+    filename = "nominal_control"
+    filename = name + "_" + filename + "_{}".format(now)
+    save_dict(outdir, filename, w_opt)
+
+    filename = "nominal_optimal_value"
+    filename = name + "_" + filename + "_{}".format(now)
+    save_dict(outdir, filename, f_opt)
 
 if __name__ == "__main__":
 

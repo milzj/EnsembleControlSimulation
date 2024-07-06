@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from casadi import *
+from base.figure_style import *
 
 
 
@@ -34,9 +35,11 @@ def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename=""):
 
     plt.figure(1)
     plt.clf()
-    plt.plot(tgrid, vertcat(DM.nan(1), u1_opt), '-.',color="tab:orange", label=r"$u_1^*(t)$")
-    if ncontrols > 1:
-        plt.plot(tgrid, vertcat(DM.nan(1), u2_opt), '--',color="tab:blue", label=r"$u_2^*(t)$")
+    if ncontrols == 1:
+        plt.plot(tgrid, vertcat(DM.nan(1), u1_opt), '-.',color="tab:blue", label=r"$u^*(t)$")
+    if ncontrols == 2:
+        plt.plot(tgrid, vertcat(DM.nan(1), u1_opt), '-.',color="tab:blue", label=r"$u_1^*(t)$")
+        plt.plot(tgrid, vertcat(DM.nan(1), u2_opt), '--',color="tab:orange", label=r"$u_2^*(t)$")
 
     handles, labels = plt.gca().get_legend_handles_labels() # get existing handles and labels
     empty_patch = mpatches.Patch(color='none') # create a patch with no color

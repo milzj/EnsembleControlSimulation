@@ -25,7 +25,7 @@ class VaccinationScheduling(ensemblecontrol.ControlProblem):
     @property
     def sigma(self):
         # standard deviation
-        return 0.05
+        return 0.15
 
     @property
     def control_bounds(self):

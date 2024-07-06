@@ -4,29 +4,35 @@ import ensemblecontrol
 from plot_state_control import plot_state_control
 from stats import save_dict
 
-def simulate_reference_problem(ControlProblem, Sampler, now, name, nsamples):
+def simulate_reference_problem(ControlProblem, Sampler, now, name, nsamples, nreplications):
 
     outdir = "output/"+now+"/"+name+"/reference_problem/"
     os.makedirs(outdir, exist_ok=True)
 
-    control_problem = ControlProblem()
-    sampler = Sampler()
 
-    nparams = len(control_problem.nominal_param[0])
-    samples = sampler.sample(nsamples, nparams)
+    for nreplication in range(nreplications):
 
-    saa_control_problem = ensemblecontrol.SAAProblem(control_problem, samples)
-    w_opt, f_opt = saa_control_problem.solve()
+        control_problem = ControlProblem()
+        sampler = Sampler(nreplications)
+        nparams = control_problem.nparams
+        samples = sampler.sample(nsamples, nparams, nreplication)
 
-    plot_state_control(control_problem, w_opt, nsamples=nsamples, outdir=outdir, filename="reference")
+        saa_control_problem = ensemblecontrol.SAAProblem(control_problem, samples)
+        w_opt, f_opt = saa_control_problem.solve()
 
-    filename = "solutions"
-    filename = name + "_" + filename + "_{}".format(now)
-    save_dict(outdir, filename, w_opt)
+        filename = "rep_{}".format(nreplication)
+        filename = "reference_" + name + "_" + filename + "_{}".format(now)
+        plot_state_control(control_problem, w_opt, nsamples=nsamples,
+                            outdir=outdir,
+                            filename=filename)
 
-    filename = "optimal_values"
-    filename = name + "_" + filename + "_{}".format(now)
-    save_dict(outdir, filename, f_opt)
+        filename = "solutions_rep_{}".format(nreplication)
+        filename = name + "_" + filename + "_{}".format(now)
+        save_dict(outdir, filename, w_opt)
+
+        filename = "optimal_values_rep_{}".format(nreplication)
+        filename = name + "_" + filename + "_{}".format(now)
+        save_dict(outdir, filename, f_opt)
 
 
 if __name__ == "__main__":
@@ -44,6 +50,7 @@ if __name__ == "__main__":
     now = sys.argv[1]
     name = sys.argv[2]
     nrefsamples = int(sys.argv[3])
+    nreplications = int(sys.argv[4])
 
     if name == "harmonic_oscillator":
         ControlProblem = HarmonicOscillator
@@ -58,4 +65,4 @@ if __name__ == "__main__":
         raise NotImplementedError()
 
 
-    simulate_reference_problem(ControlProblem, Sampler, now, name, nrefsamples)
+    simulate_reference_problem(ControlProblem, Sampler, now, name, nrefsamples, nreplications)

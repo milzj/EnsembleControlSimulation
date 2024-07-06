@@ -8,7 +8,7 @@ from cycler import cycler
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes, mark_inset
 
 fontsize = 12.5
-linewidth = 1
+linewidth = 2
 
 color_styles = 2*['k']
 marker_styles = ['d', 'o', 'p', 's', '<']

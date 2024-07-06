@@ -11,10 +11,6 @@ def simulate_saa_problem(ControlProblem, Sampler, now, name, nreplications, lbra
     outdir = "output/"+now+"/"+name+"/saa_problem/"
     os.makedirs(outdir, exist_ok=True)
 
-    control_problem = ControlProblem()
-    sampler = Sampler(nreplications=nreplications)
-    nparams = len(control_problem.nominal_param[0])
-
     solution_stats = {}
     optimal_value_stats = {}
 
@@ -26,6 +22,8 @@ def simulate_saa_problem(ControlProblem, Sampler, now, name, nreplications, lbra
         for replication in range(nreplications):
 
             control_problem = ControlProblem()
+            sampler = Sampler(nreplications=nreplications)
+            nparams = control_problem.nparams
             samples = sampler.sample(replication, nsamples, nparams)
             saa_control_problem = ensemblecontrol.SAAProblem(control_problem, samples)
             w_opt, f_opt = saa_control_problem.solve()
@@ -33,7 +31,8 @@ def simulate_saa_problem(ControlProblem, Sampler, now, name, nreplications, lbra
             sol_stat[replication] = w_opt
             val_stat[replication] = f_opt
 
-            plot_state_control(control_problem, w_opt, nsamples=nsamples, outdir=outdir, filename="sample_size={}_replication={}".format(nsamples,replication))
+            plot_state_control(control_problem, w_opt, nsamples=nsamples, outdir=outdir,
+                filename= name + "_saa_problem_sample_size={}_replication={}".format(nsamples,replication))
 
         solution_stats[nsamples] = sol_stat
         optimal_value_stats[nsamples] = val_stat

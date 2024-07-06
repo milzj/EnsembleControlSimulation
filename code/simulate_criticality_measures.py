@@ -3,8 +3,9 @@ from base import idx_state_control
 
 import ensemblecontrol
 from stats import load_dict, save_dict
+import numpy as np
 
-def simulate_criticality_measures(ControlProblem, Sampler, saa_date, name, nrefsamples):
+def simulate_criticality_measures(ControlProblem, Sampler, saa_date, name, nrefsamples, nrefreplications):
 
     # SAA simulation
     outdir = "output/"+saa_date+"/{}/saa_problem".format(name)
@@ -15,12 +16,6 @@ def simulate_criticality_measures(ControlProblem, Sampler, saa_date, name, nrefs
     nreplications = len(saa_controls[nsamples_vec[0]].keys())
 
     control_problem = ControlProblem()
-    sampler = Sampler()
-    nparams = control_problem.nparams
-
-    control_problem = ControlProblem()
-    samples = sampler.sample(nrefsamples, nparams)
-    saa_control_problem = ensemblecontrol.SAAProblem(control_problem, samples, MultipleShooting=False)
 
     # compute control bounds
     nintervals = control_problem.nintervals
@@ -47,10 +42,19 @@ def simulate_criticality_measures(ControlProblem, Sampler, saa_date, name, nrefs
         for replication in range(nreplications):
 
             w_saa = saa_controls[nsamples][replication]
-
             u_saa = w_saa[idx_control]
 
-            deriv_saa = saa_control_problem.derivative(u_saa)
+            deriv_saa = []
+            for nrefreplication in range(nrefreplications):
+
+                sampler = Sampler(nrefreplications)
+                nparams = control_problem.nparams
+                samples = sampler.sample(nrefsamples, nparams, nrefreplication)
+                saa_control_problem = ensemblecontrol.SAAProblem(control_problem, samples, MultipleShooting=False)
+                deriv_saa.append( saa_control_problem.derivative(u_saa) )
+
+            deriv_saa = np.mean(deriv_saa, axis=0)
+
             grad_saa = deriv_saa/mesh_width
             cm = ensemblecontrol.base.canonical_criticality_measure(u_saa, grad_saa, lb_vec, ub_vec, mesh_width)
 
@@ -62,7 +66,7 @@ def simulate_criticality_measures(ControlProblem, Sampler, saa_date, name, nrefs
     os.makedirs(outdir, exist_ok=True)
 
     filename = "criticality_measures"
-    filename = name + "_" + filename + "_{}".format(saa_date)
+    filename = name + "_" + filename + "_rep_{}".format(saa_date)
     save_dict(outdir, filename, criticality_measure_stats)
 
 if __name__ == "__main__":
@@ -79,6 +83,7 @@ if __name__ == "__main__":
     saa_date = sys.argv[1]
     name = sys.argv[2]
     nrefsamples = int(sys.argv[3])
+    nrefreplications = int(sys.argv[4])
 
     if name == "harmonic_oscillator":
         ControlProblem = HarmonicOscillator
@@ -92,4 +97,5 @@ if __name__ == "__main__":
     else:
         raise NotImplementedError()
 
-    simulate_criticality_measures(ControlProblem, Sampler, saa_date, name, nrefsamples)
+
+    simulate_criticality_measures(ControlProblem, Sampler, saa_date, name, nrefsamples, nrefreplications)

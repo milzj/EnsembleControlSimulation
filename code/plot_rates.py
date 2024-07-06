@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-#from base.figure_style import *
+from base.figure_style import *
 from base.lsqs_label import lsqs_label
 import sys
 
@@ -25,24 +25,24 @@ def dict_to_mat(stats_dict):
     return stats_mat
 
 
-def plot_rates(sample_sizes, errors, label, outdir, type, filename):
+def plot_rates(sample_sizes, errors, label, label_realizations, outdir, type, filename, errorfct=lambda x : np.mean(x, axis=1)):
 
     plt.figure(1)
     plt.clf()
 
     # average
-    plt.scatter(sample_sizes, np.mean(errors, axis=1), color="black", label=label)
+    plt.scatter(sample_sizes, errorfct(errors), color="black", label=label)
 
     # realizations
     i=-1
     for N in sample_sizes:
         i+=1
-        plt.scatter(N*np.ones(len(errors[i,:])), errors[i, :], marker="o", color="black", s=2, label="realizations")
+        plt.scatter(N*np.ones(len(errors[i,:])), errors[i, :], marker="o", color="black", s=2, label=label_realizations)
 
     # least squares fit
     X = np.ones((len(sample_sizes),2))
     X[:,1] = np.log10(sample_sizes)
-    x, residuals, rank, s = np.linalg.lstsq(X, np.log10(np.mean(errors, axis=1)), rcond=None)
+    x, residuals, rank, s = np.linalg.lstsq(X, np.log10(errorfct(errors)), rcond=None)
 
     rate = x[1]
     constant = 10.0**x[0]
@@ -60,12 +60,15 @@ def plot_rates(sample_sizes, errors, label, outdir, type, filename):
     plt.savefig(outdir+"/{}={}.pdf".format(filename, type))
 
 
-def plot_objective_rates(ref_date, saa_date, name, ndrop=1):
+def plot_objective_rates(ref_date, saa_date, name, nrefrepliations, ndrop=1):
 
     # reference simulation
     outdir = "output/"+ref_date+"/"+name
-    filename = "reference_problem/"+name+"_optimal_values_{}".format(ref_date)
-    ref_value = load_dict(outdir, filename)
+    ref_value = []
+    for nreplication in range(nrefreplications):
+        filename = "reference_problem/"+name+"_optimal_values_rep_{}_{}".format(nreplication, ref_date)
+        ref_value += [load_dict(outdir, filename)]
+    ref_value = np.mean(ref_value)
 
     # SAA simulation
     outdir = "output/"+saa_date+"/"+name
@@ -79,24 +82,41 @@ def plot_objective_rates(ref_date, saa_date, name, ndrop=1):
     errors = errors[ndrop::, :]
 
     # bias
-    plot_rates(sample_sizes, errors, r"$v_{\mathrm{ref}}^*-\mathbb{E}[v_N^*]$", outdir, "bias_rates", filename)
+    label_realizations =  r"$v_{\mathrm{ref}}^*-v_N^*$"
+    plot_rates(sample_sizes, errors, "$v_{\mathrm{ref}}^*-\widehat{\mathbb{E}}[v_N^*]$", label_realizations, outdir, "bias_rates", filename)
 
     # l1
-    plot_rates(sample_sizes, np.abs(errors), r"$\mathbb{E}[|v_N^*-v_{\mathrm{ref}}^*|]$",  outdir, "objective_rates", filename)
+    label_realizations =  r"$|v_N^*-v_{\mathrm{ref}}^*|$"
+    plot_rates(sample_sizes, np.abs(errors), r"$\widehat{\mathbb{E}}[|v_N^*-v_{\mathrm{ref}}^*|]$",  label_realizations, outdir, "objective_rates", filename, )
 
-def plot_criticality_measures(saa_date, name, ndrop=1):
+    # rmse
+    errorfct = lambda x : np.sqrt(np.mean(x**2, axis=1))
+    label_realizations =  r"$|v_N^*-v_{\mathrm{ref}}^*|$"
+    plot_rates(sample_sizes, np.abs(errors), r"$(\widehat{\mathbb{E}}[|v_N^*-v_{\mathrm{ref}}^*|^2])^{1/2}$",  label_realizations, outdir, "rmse_rates", filename, errorfct=errorfct)
+
+    # std
+    errorfct = lambda x : np.sqrt(np.mean(x**2, axis=1))
+    errors = (stats_mat.transpose() - np.mean(stats_mat, axis=1)).transpose()
+    errors = errors[ndrop::, :]
+
+    label_realizations =  r"$|v_N^*-\widehat{\mathbb{E}}[v_N^*]|$"
+    plot_rates(sample_sizes, errors, r"$(\widehat{\mathbb{E}}[|v_N^*-\widehat{\mathbb{E}}[v_N^*]|^2])^{1/2}$", label_realizations, outdir, "std_rates", filename, errorfct=errorfct)
+
+def plot_criticality_measures(saa_date, name, nreplications, ndrop=1):
 
     # SAA simulation
     outdir = "output/"+saa_date+"/"+name
-    filename = "saa_problem/"+name+"_criticality_measures_{}".format(saa_date)
+    filename = "saa_problem/"+name+"_criticality_measures_rep_{}".format(saa_date)
     saa_stats = load_dict(outdir, filename)
+    stats_mat = dict_to_mat(saa_stats)
+
 
     # empirical means
     sample_sizes = list(saa_stats.keys())[ndrop::]
-    stats_mat = dict_to_mat(saa_stats)
     errors = stats_mat[ndrop::,:]
 
-    plot_rates(sample_sizes, errors, r"$\chi$", outdir, "criticality_measure_rates", filename)
+    label_realizations =  r"$\chi_{\mathrm{ref}}(u_N^*)$"
+    plot_rates(sample_sizes, errors, r"$\widehat{\mathbb{E}}[\chi_{\mathrm{ref}}(u_N^*)]$", label_realizations, outdir, "criticality_measure_rates", filename)
 
 
 if __name__ == "__main__":
@@ -104,8 +124,8 @@ if __name__ == "__main__":
     ref_date = sys.argv[1]
     saa_date = sys.argv[2]
     name = sys.argv[3]
+    ndrop = int(sys.argv[4])
+    nrefreplications = int(sys.argv[5])
 
-    ndrop = 0
-
-    plot_criticality_measures(saa_date, name, ndrop=ndrop)
-    plot_objective_rates(ref_date, saa_date, name, ndrop=ndrop)
+    plot_objective_rates(ref_date, saa_date, name, nrefreplications, ndrop=ndrop)
+    plot_criticality_measures(saa_date, name, nrefreplications, ndrop=ndrop)

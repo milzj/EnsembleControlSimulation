@@ -1,28 +1,17 @@
 import numpy as np
 from casadi import *
 from scipy.stats import qmc
-from vaccination_scheduling import VaccinationScheduling
+from vaccination_scheduling import ReferenceSampler
 
-class Sampler(VaccinationScheduling):
-
-    def __init__(self, nreplications=1):
-
-        super().__init__()
-
-        entropy = 0x3034c61a9ae04ff8cb62ab8ec2c4b501
-        rng = np.random.default_rng(entropy)
-        self.rngs = rng.spawn(nreplications)
-
+class Sampler(ReferenceSampler):
 
     def sample(self, replication, nsamples, nparams):
 
         sigma = self.sigma
         nominal_param = self.nominal_param[0]
 
-        sample = self.rngs[replication].uniform(0.0, 1.0, (nsamples, nparams))
-        sample = qmc.scale(sample, -1.0, 1.0)
-
-        sample = (1+sigma*sample)*nominal_param
+        sample = self.rngs[self.shift+replication].uniform(0, 1.0, (nsamples, nparams))
+        sample = self.scale(sample)
 
         return sample
 
