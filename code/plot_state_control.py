@@ -47,13 +47,13 @@ def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename=""):
     handles.append(empty_patch)  # add new patches and labels to list
 
     if filename.find("reference") != -1:
-        label = r"($\alpha={}, n = {}, N = {}$)".format(alpha,nintervals,nsamples)
+        label = r"($\alpha={}, q = {}, N = {}$)".format(alpha,nintervals,nsamples)
         label = label.replace("N", "N_{\mathrm{ref}}")
         labels.append(label)
     elif filename.find("nominal") != -1:
-        labels.append(r"($\alpha={}, n = {}$)".format(alpha,nintervals))
+        labels.append(r"($\alpha={}, q = {}$)".format(alpha,nintervals))
     else:
-        labels.append(r"($\alpha={}, n = {}, N={}$)".format(alpha,nintervals,nsamples))
+        labels.append(r"($\alpha={}, q = {}, N={}$)".format(alpha,nintervals,nsamples))
 
 
     plt.legend(handles, labels) # apply new handles and labels to plot

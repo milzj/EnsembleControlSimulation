@@ -8,14 +8,7 @@ nrefsamples=$[2**12]
 nreplications="50"
 nrefreplications="1"
 lbrange="6"
-ubrange="10+1"
-ndrop="0"
-
-nrefsamples=$[2**3]
-nreplications="2"
-nrefreplications="1"
-lbrange="1"
-ubrange="2"
+ubrange="11"
 ndrop="0"
 
 for problem in "${Problems[@]}"
