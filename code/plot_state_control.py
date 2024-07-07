@@ -1,5 +1,4 @@
 from base import idx_state_control
-#from base.figure_style import *
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,9 +6,7 @@ import matplotlib.patches as mpatches
 from casadi import *
 from base.figure_style import *
 
-
-
-def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename=""):
+def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename="", ylim=[]):
 
     nstates = problem.nstates
     alpha = problem.alpha
@@ -59,6 +56,9 @@ def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename=""):
     plt.legend(handles, labels) # apply new handles and labels to plot
     plt.xlabel(r'$t$')
     plt.grid()
+    if ylim != []:
+        #print(plt.ylim())
+        plt.ylim(ylim)
 
     plt.gca().set_box_aspect(1)
     plt.tight_layout()
