@@ -10,7 +10,7 @@ This repository contains supplementary code for the manuscript
 
 We consider optimal control problems involving nonlinear ordinary differential equations with uncertain inputs. By employing the sample average approximation, we obtain optimal control problems with ensembles of deterministic dynamical systems. Leveraging techniques for metric entropy bounds, we derive non-asymptotic Monte Carlo-type convergence rates for the ensemble-based solutions. Our theoretical framework is validated through numerical simulations on an academic optimal control problem and a vaccination scheduling problem for epidemic control under model parameter uncertainty.
 
-## Getting started
+## Using Docker
 
 We provide a pre-build Docker image which can be used to run the code in this repository. First thing you need to do is to ensure that you have [docker installed](https://docs.docker.com/get-docker/).
 
@@ -23,11 +23,12 @@ docker run --rm -it ghcr.io/milzj/ensembecontrolsimulation:latest
 Alternatively, you can build a docker image locally and subsequently run it:
 
 ```bash
+cd docker
 docker build -t ensemblecontrolsimulation .
 docker run -it ensemblecontrolsimulation
 ```
 
-### Running simulation
+## Running simulation
 
 To run the simulations, execute
 
@@ -36,13 +37,14 @@ cd code
 ./simulate_problems.sh
 ```
 
-### Postprocessing
+## Postprocessing
 
-To  reproduce figures, execute
+To the reproduce figure for the nominal solution
+of the harmonic oscillator, run
 
 ```bash
 cd code
-./plot_rates.sh
+plot_nominal_control.py
 ```
 
 ## Having issues
