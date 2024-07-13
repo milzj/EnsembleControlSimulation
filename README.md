@@ -46,7 +46,6 @@ of the harmonic oscillator, run
 cd code
 plot_nominal_control.py
 ```
-
 ## Having issues
 
 If you have any troubles please file an issue in the GitHub repository.
