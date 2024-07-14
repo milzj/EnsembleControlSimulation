@@ -6,6 +6,6 @@ authors:
   orcid: "https://orcid.org/0000-0003-3601-3340"
 title: "Supplementary code for the manuscript: Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems"
 version: 0.0.1
-doi: 10.5281/zenodo.1234
-date-released: 2017-12-18
+doi: 10.5281/zenodo.12740932
+date-released: 2024-07-14
 url: "https://github.com/milzj/EnsembleControlSimulation"
