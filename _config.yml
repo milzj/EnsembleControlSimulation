@@ -1,7 +1,7 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Supplementary code for the manuscript: Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
+title: Supplementary code for the manuscript Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
 author: Johannes Milz
 copyright: "2024"
 only_build_toc_files: true
