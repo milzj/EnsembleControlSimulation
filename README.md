@@ -1,73 +1,55 @@
-# Supplementary code for the paper: Title of paper
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/scientificcomputing/example-paper/HEAD)
+# Supplementary code for the manuscript: Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
 
-This repository contains supplementary code for the paper
-> Finsberg, H., Dokken, J. 2022.
-> Title of paper, Journal of ..., volume, page, url
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/milzj/EnsembleControlSimulation/HEAD)
 
+This repository contains supplementary code for the manuscript
+> Olena Melnikov and Johannes Milz, 2024, 
+> Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
 
 ## Abstract
-Provide the abstract of the paper
 
-## Getting started
+We consider optimal control problems involving nonlinear ordinary differential equations with uncertain inputs. By employing the sample average approximation, we obtain optimal control problems with ensembles of deterministic dynamical systems. Leveraging techniques for metric entropy bounds, we derive non-asymptotic Monte Carlo-type convergence rates for the ensemble-based solutions. Our theoretical framework is validated through numerical simulations on an academic optimal control problem and a vaccination scheduling problem for epidemic control under model parameter uncertainty.
 
-We provide a pre-build Docker image which can be used to run the the code in this repository. First thing you need to do is to ensure that you have [docker installed](https://docs.docker.com/get-docker/).
+## Using Docker
+
+We provide a pre-build Docker image which can be used to run the code in this repository. First thing you need to do is to ensure that you have [docker installed](https://docs.docker.com/get-docker/).
 
 To start an interactive docker container you can execute the following command
 
 ```bash
-docker run --rm -it ghcr.io/scientificcomputing/example-paper:latest
+docker run --rm -it ghcr.io/milzj/ensembecontrolsimulation:latest
 ```
 
 Alternatively, you can build a docker image locally and subsequently run it:
 
 ```bash
+cd docker
 docker build -t ensemblecontrolsimulation .
 docker run -it ensemblecontrolsimulation
 ```
 
-### Pre-processing
-Add steps for pre-processing, e.g
+## Running simulation
 
-```
+To run the simulations, execute
+
+```bash
 cd code
-python3 pre-processing.py
+./simulate_problems.sh
 ```
 
-### Running simulation
-Add steps for running simulations, e.g
+## Postprocessing
 
-```
+To the reproduce figure for the nominal solution
+of the harmonic oscillator, run
+
+```bash
 cd code
-python3 run_all.py
+plot_nominal_control.py
 ```
-
-
-### Postprocessing
-Add steps for postprocessing / reproducing figures and tables in the paper, e.g
-
-```
-cd code
-python3 postprocess.py
-```
-
-## Citation
-
-```
-@software{Lisa_My_Research_Software_2017,
-  author = {Lisa, Mona and Bot, Hew},
-  doi = {10.5281/zenodo.1234},
-  month = {12},
-  title = {{My Research Software}},
-  url = {https://github.com/scientificcomputing/example-paper},
-  version = {2.0.4},
-  year = {2017}
-}
-```
-
-
 ## Having issues
-If you have any troubles please file and issue in the GitHub repository.
+
+If you have any troubles please file an issue in the GitHub repository.
 
 ## License
-MIT
+
+See [LICENSE](LICENSE).
