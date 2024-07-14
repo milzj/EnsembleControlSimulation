@@ -9,12 +9,11 @@ RUN apt-get update && \
 # We upgrade pip and setuptools
 RUN python3 -m pip install --no-cache-dir pip setuptools --upgrade
 
-
 ARG REPO_BRANCH="main"
 
 WORKDIR /repo
 
 # Copy pyproject.toml first so that we done need to reinstall in case another file
 # is changing after rebuiding docker image
-RUN git clone --branch ${REPO_BRANCH} --single-branch https://github.com/scientificcomputing/example-paper.git
-RUN cd example-paper && python3 -m pip install --no-cache-dir -r requirements.txt && rm -rf /tmp
+RUN git clone --branch ${REPO_BRANCH} --single-branch https://github.com/milzj/EnsembleControlSimulation.git
+RUN cd EnsembleControlSimulation && python3 -m pip install --no-cache-dir -r requirements.txt && rm -rf /tmp
