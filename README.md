@@ -5,7 +5,8 @@
 
 This repository contains supplementary code for the manuscript
 > Olena Melnikov and Johannes Milz, 2024, 
-> Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
+> Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems,
+> https://doi.org/10.48550/arXiv.2407.18182
 
 ## Abstract
 
