@@ -46,13 +46,12 @@ def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename="", ylim=
         control_legend = ax.legend(control_handles, control_labels, loc="upper left", bbox_to_anchor=(0.15, 1.0))
         ax.add_artist(control_legend)
 
-        label = r"$\alpha = {}$".format(alpha) + "\n" + \
-                r"$q = {}$".format(nintervals) + "\n" + \
-                r"$N = {}$".format(nsamples)
+        label = r"($\alpha={}, q = {}, N = {}$)".format(alpha,nintervals,nsamples)
         label = label.replace("N", "N_{\mathrm{ref}}")
         param_patch = mpatches.Patch(color='none', label=label)
 
-        ax.legend(handles=[param_patch], loc="lower right")
+
+        ax.legend(handles=[param_patch], loc="lower right", fontsize="small", handletextpad=-2)
     else:
         # Original single legend behavior
         handles, labels = ax.get_legend_handles_labels()
