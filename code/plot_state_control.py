@@ -38,22 +38,38 @@ def plot_state_control(problem, w_opt, nsamples=1, outdir="", filename="", ylim=
         plt.plot(tgrid, vertcat(DM.nan(1), u1_opt), '-.',color="tab:blue", label=r"$u_1^*(t)$")
         plt.plot(tgrid, vertcat(DM.nan(1), u2_opt), '--',color="tab:orange", label=r"$u_2^*(t)$")
 
-    handles, labels = plt.gca().get_legend_handles_labels() # get existing handles and labels
-    empty_patch = mpatches.Patch(color='none') # create a patch with no color
+    ax = plt.gca()
 
-    handles.append(empty_patch)  # add new patches and labels to list
+    if "reference" in filename and "harmonic_oscillator" in filename:
+        # Split legend into control labels and parameter box
+        control_handles, control_labels = ax.get_legend_handles_labels()
+        control_legend = ax.legend(control_handles, control_labels, loc="upper left", bbox_to_anchor=(0.15, 1.0))
+        ax.add_artist(control_legend)
 
-    if filename.find("reference") != -1:
-        label = r"($\alpha={}, q = {}, N = {}$)".format(alpha,nintervals,nsamples)
+        label = r"$\alpha = {}$".format(alpha) + "\n" + \
+                r"$q = {}$".format(nintervals) + "\n" + \
+                r"$N = {}$".format(nsamples)
         label = label.replace("N", "N_{\mathrm{ref}}")
-        labels.append(label)
-    elif filename.find("nominal") != -1:
-        labels.append(r"($\alpha={}, q = {}$)".format(alpha,nintervals))
+        param_patch = mpatches.Patch(color='none', label=label)
+
+        ax.legend(handles=[param_patch], loc="lower right")
     else:
-        labels.append(r"($\alpha={}, q = {}, N={}$)".format(alpha,nintervals,nsamples))
+        # Original single legend behavior
+        handles, labels = ax.get_legend_handles_labels()
+
+        if "reference" in filename:
+            label = r"($\alpha={}, q = {}, N = {}$)".format(alpha,nintervals,nsamples)
+            label = label.replace("N", "N_{\mathrm{ref}}")
+        elif "nominal" in filename:
+            label = r"($\alpha={}, q = {}$)".format(alpha,nintervals)
+        else:
+            label = r"($\alpha={}, q = {}, N={}$)".format(alpha,nintervals,nsamples)
+
+        labels.append(label)
+        handles.append(mpatches.Patch(color='none'))
+        ax.legend(handles, labels)
 
 
-    plt.legend(handles, labels) # apply new handles and labels to plot
     plt.xlabel(r'$t$')
     plt.grid()
     if ylim != []:
