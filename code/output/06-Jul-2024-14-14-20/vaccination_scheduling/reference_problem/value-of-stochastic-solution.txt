@@ -1,0 +1,4 @@
+SAA objective evaluated at nominal_control 31.5168
+SAA objective evaluated at reference_control 26.6276
+value of stochastic solution 4.88922
+relative value of stochastic solution 0.183615
