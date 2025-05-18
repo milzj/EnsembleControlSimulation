@@ -64,10 +64,10 @@ with open("output/06-Jul-2024-14-14-20/harmonic_oscillator/reference_problem/val
     f.write(f"SAA objective evaluated at nominal_control {ho_nom_val}\n")
     f.write(f"SAA objective evaluated at reference_control {ho_ref_val}\n")
     f.write(f"value of stochastic solution {ho_nom_val-ho_ref_val}\n")
-    f.write(f"relative value of stochastic solution {(ho_nom_val-ho_ref_val)/ho_ref_val}\n")
+    f.write(f"relative value of stochastic solution {(ho_nom_val-ho_ref_val)/ho_nom_val}\n")
 
 with open("output/06-Jul-2024-14-14-20/vaccination_scheduling/reference_problem/value-of-stochastic-solution.txt", "w") as f:
     f.write(f"SAA objective evaluated at nominal_control {vs_nom_val}\n")
     f.write(f"SAA objective evaluated at reference_control {vs_ref_val}\n")
     f.write(f"value of stochastic solution {vs_nom_val-vs_ref_val}\n")
-    f.write(f"relative value of stochastic solution {(vs_nom_val-vs_ref_val)/vs_ref_val}\n")
+    f.write(f"relative value of stochastic solution {(vs_nom_val-vs_ref_val)/vs_nom_val}\n")
