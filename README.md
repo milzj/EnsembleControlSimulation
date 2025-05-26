@@ -48,7 +48,7 @@ cd code
 
 ## Postprocessing
 
-To the reproduce figure for the nominal solution
+To reproduce the figure for the nominal solution
 of the harmonic oscillator, run
 
 ```bash
