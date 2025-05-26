@@ -29,6 +29,14 @@ docker build -t ensemblecontrolsimulation .
 docker run -it ensemblecontrolsimulation
 ```
 
+## Using without Docker
+
+We recommend to create a virtual environment. After activating the venc, you can install the required packages via
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Running simulation
 
 To run the simulations, execute
