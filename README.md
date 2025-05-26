@@ -55,6 +55,11 @@ of the harmonic oscillator, run
 cd code
 plot_nominal_control.py
 ```
+
+### Notes
+
+The simulations included in the paper have been generated using Phython 3.10.14.
+
 ## Having issues
 
 If you have any troubles please file an issue in the GitHub repository.
