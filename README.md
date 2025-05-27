@@ -1,6 +1,5 @@
 # Supplementary code for the manuscript: Convergence rates for ensemble-based solutions to optimal control of uncertain dynamical systems
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/milzj/EnsembleControlSimulation/HEAD)
 [![DOI](https://zenodo.org/badge/806452621.svg)](https://zenodo.org/doi/10.5281/zenodo.12740932)
 
 This repository contains supplementary code for the manuscript
@@ -30,6 +29,14 @@ docker build -t ensemblecontrolsimulation .
 docker run -it ensemblecontrolsimulation
 ```
 
+## Using without Docker
+
+We recommend to create a virtual environment. After activating the venc, you can install the required packages via
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Running simulation
 
 To run the simulations, execute
@@ -41,13 +48,25 @@ cd code
 
 ## Postprocessing
 
-To the reproduce figure for the nominal solution
+To reproduce the figure for the nominal solution
 of the harmonic oscillator, run
 
 ```bash
 cd code
 plot_nominal_control.py
 ```
+
+### Notes
+
+- The simulations included in the paper have been generated using Phython 3.10.14.
+- Simulations were performed on a laptop equipped with a 12th Gen
+440 Intel(R) Core(TM) i7-1260P processor and 16 GB of RAM.
+- The simulation output included in the manuscript is located at
+[code/output/06-Jul-2024-14-14-20](code/output/06-Jul-2024-14-14-20)
+- We performed a replication study. The output is located in
+[code/output/26-May-2025-12-13-44](code/output/26-May-2025-12-13-44).
+The controls and convergence rates match those included in the paper.
+
 ## Having issues
 
 If you have any troubles please file an issue in the GitHub repository.
