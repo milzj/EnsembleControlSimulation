@@ -58,7 +58,14 @@ plot_nominal_control.py
 
 ### Notes
 
-The simulations included in the paper have been generated using Phython 3.10.14.
+- The simulations included in the paper have been generated using Phython 3.10.14.
+- Simulations were performed on a laptop equipped with a 12th Gen
+440 Intel(R) Core(TM) i7-1260P processor and 16 GB of RAM.
+- The simulation output included in the manuscript is located at
+[code/output/06-Jul-2024-14-14-20](code/output/06-Jul-2024-14-14-20)
+- We performed a replication study. The output is located in
+[code/output/26-May-2025-12-13-44](code/output/26-May-2025-12-13-44).
+The controls and convergence rates match those included in the paper.
 
 ## Having issues
 
